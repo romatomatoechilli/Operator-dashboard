@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Multitasked | Streaming Operations</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-name">
+            MULTITASKED
+        </div>
+
+        <div class="brand-subtitle">
+            STREAMING OPERATIONS CENTER
+        </div>
+
+    </div>
+
+
+    <div class="header-right">
+
+    <div id="currentDate" class="date">
+    </div>
+
+    <button
+        id="operatorModeBtn"
+        class="operator-button"
+    >
+        OPERATOR MODE
+    </button>
+
+    <button id="addGameBtn" class="add-button">
+        + ADD GAME
+    </button>
+
+</div>
+
+</header>
+
+
+
+<main>
+
+
+    <!-- OVERVIEW -->
+
+    <section class="overview">
+
+        <div class="overview-item">
+
+            <span id="gameCount">
+                0
+            </span>
+
+            <small>
+                EVENTS
+            </small>
+
+        </div>
+
+
+        <div class="overview-item">
+
+            <span id="liveCount">
+                0
+            </span>
+
+            <small>
+                LIVE
+            </small>
+
+        </div>
+
+
+        <div class="overview-item">
+
+            <span id="attentionCount">
+                0
+            </span>
+
+            <small>
+                ATTENTION
+            </small>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ATTENTION -->
+
+    <section
+        id="attentionSection"
+        class="attention-section"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    PRIORITY
+                </span>
+
+                <h2>
+                    ATTENTION REQUIRED
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div id="attentionList">
+
+            <div class="empty-attention">
+                Nothing requires your attention right now.
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- EVENTS -->
+
+    <section class="events-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    TODAY
+                </span>
+
+                <h2>
+                    LIVE OPERATIONS
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="gameContainer"
+            class="game-grid"
+        >
+
+        </div>
+
+    </section>
+
+    <!-- OPERATOR MODE -->
+
+<div
+    id="operatorPanel"
+    class="operator-panel"
+>
+
+    <div
+        id="operatorHeader"
+        class="operator-header"
+    >
+
+        <div class="operator-brand">
+
+            <span class="operator-title">
+                MULTITASKED
+            </span>
+
+            <span class="operator-label">
+                OPERATOR MODE
+            </span>
+
+        </div>
+
+
+        <div class="operator-controls">
+
+            <button
+                id="minimizeOperator"
+                class="operator-control"
+                type="button"
+            >
+                −
+            </button>
+
+
+            <button
+                id="closeOperator"
+                class="operator-control"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="operatorGames"
+        class="operator-games"
+    >
+    </div>
+
+</div>
+
+
+</main>
+
+
+
+<!-- ADD GAME MODAL -->
+
+<div
+    id="gameModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="section-label">
+                    NEW EVENT
+                </span>
+
+                <h2>
+                    ADD GAME
+                </h2>
+
+            </div>
+
+            <button
+                id="closeModal"
+                class="close-button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <label>
+            Game Name
+        </label>
+
+        <input
+            id="gameName"
+            type="text"
+            placeholder="Example: Arsenal vs Chelsea"
+        >
+
+
+        <label>
+            Sport
+        </label>
+
+        <select id="sport">
+
+            <option>Soccer</option>
+            <option>Baseball</option>
+            <option>Football</option>
+            <option>Basketball</option>
+            <option>UFC</option>
+            <option>Rugby</option>
+            <option>Tennis</option>
+
+        </select>
+<label>
+    Game Start Time
+</label>
+
+<input
+    id="startTime"
+    type="time"
+>
+
+        <label>
+            Drop Slate Time
+        </label>
+
+        <input
+            id="dropSlate"
+            type="time"
+        >
+
+
+        <div class="workflow-title">
+            WORKFLOW
+        </div>
+
+
+        <div class="workflow-options">
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Preslate"
+                    checked
+                >
+                Preslate
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Drop Slate"
+                    checked
+                >
+                Drop Slate
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Game End Marker"
+                    checked
+                >
+                Game End Marker
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Post Slate"
+                    checked
+                >
+                Post Slate
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Broadcast End"
+                    checked
+                >
+                Broadcast End
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Expiration"
+                    checked
+                >
+                Expiration
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="JAB"
+                >
+                JAB
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    value="Clip"
+                >
+                Clip
+            </label>
+
+        </div>
+
+
+        <button
+            id="createGame"
+            class="create-button"
+        >
+            CREATE GAME
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script src="js/storage.js"></script>
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>
