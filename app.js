@@ -22,6 +22,43 @@ const attentionList =
 
 
 // --------------------------------------------------
+// SPORT SELECTOR
+// --------------------------------------------------
+
+const sportSelect =
+    document.getElementById("sport");
+
+const customSport =
+    document.getElementById("customSport");
+
+
+sportSelect.addEventListener(
+    "change",
+    () => {
+
+        if (
+            sportSelect.value === "__custom__"
+        ) {
+
+            customSport.style.display =
+                "block";
+
+            customSport.focus();
+
+        } else {
+
+            customSport.style.display =
+                "none";
+
+            customSport.value = "";
+
+        }
+
+    }
+);
+
+
+// --------------------------------------------------
 // STARTER GAMES
 // --------------------------------------------------
 
@@ -975,10 +1012,32 @@ document
                 .trim();
 
 
-        const sport =
-            document
-                .getElementById("sport")
-                .value;
+        let sport =
+    document
+        .getElementById("sport")
+        .value;
+
+
+if (sport === "__custom__") {
+
+    sport =
+        document
+            .getElementById("customSport")
+            .value
+            .trim();
+
+
+    if (!sport) {
+
+        alert(
+            "Please enter a sport name."
+        );
+
+        return;
+
+    }
+
+}
 
 
         const dropSlate =
@@ -1069,6 +1128,18 @@ document
         document
             .getElementById("dropSlate")
             .value = "";
+
+            document
+    .getElementById("sport")
+    .value = "Soccer";
+
+document
+    .getElementById("customSport")
+    .value = "";
+
+document
+    .getElementById("customSport")
+    .style.display = "none";
 
 
         modal.style.display = "none";
