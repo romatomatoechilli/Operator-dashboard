@@ -21,6 +21,7 @@ const attentionList =
     document.getElementById("attentionList");
 
 
+    
 // --------------------------------------------------
 // SPORT SELECTOR
 // --------------------------------------------------
@@ -56,6 +57,64 @@ sportSelect.addEventListener(
 
     }
 );
+
+// --------------------------------------------------
+// SAVED SPORTS
+// --------------------------------------------------
+
+let savedSports =
+    JSON.parse(
+        localStorage.getItem(
+            "multitaskedSports"
+        )
+    ) || [
+        "Soccer",
+        "UFC",
+        "Rugby"
+    ];
+
+    function loadSports() {
+
+    const customOption =
+        sportSelect.querySelector(
+            'option[value="__custom__"]'
+        );
+
+
+    sportSelect
+        .querySelectorAll(
+            "option:not([value='__custom__'])"
+        )
+        .forEach(option => {
+
+            option.remove();
+
+        });
+
+
+    savedSports.forEach(
+        sport => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                sport;
+
+            option.textContent =
+                sport;
+
+            sportSelect.insertBefore(
+                option,
+                customOption
+            );
+
+        }
+    );
+
+}
+
+loadSports();
 
 
 // --------------------------------------------------
@@ -542,8 +601,6 @@ function renderGames() {
 
     container.innerHTML = "";
 
-    container.innerHTML = "";
-
 
     document.getElementById(
         "gameCount"
@@ -566,6 +623,25 @@ function renderGames() {
                 step =>
                     !game.completed.includes(step)
             );
+
+            const totalBreaks =
+    game.commercialBreaks
+        ? game.commercialBreaks.length
+        : 0;
+
+const sentBreaks =
+    game.commercialBreaks
+        ? game.commercialBreaks.filter(
+            breakItem => breakItem.sent
+        ).length
+        : 0;
+
+const nextBreak =
+    game.commercialBreaks
+        ? game.commercialBreaks.find(
+            breakItem => !breakItem.sent
+        )
+        : null;
 
 
         const completedCount =
@@ -666,6 +742,75 @@ function renderGames() {
         : ""
 }
 
+${
+    totalBreaks > 0
+        ? `
+
+        <div class="break-summary">
+
+            <div class="break-summary-header">
+
+                <span class="next-label">
+                    COMMERCIAL BREAKS
+                </span>
+
+                <span class="break-summary-count">
+                    ${sentBreaks} / ${totalBreaks} SENT
+                </span>
+
+            </div>
+
+
+            <div class="break-summary-main">
+
+                <div>
+
+                    <span class="break-summary-label">
+
+                        ${
+                            nextBreak
+                                ? "NEXT BREAK"
+                                : "BREAKS COMPLETE"
+                        }
+
+                    </span>
+
+
+                    <div class="break-summary-time">
+
+                        ${
+                            nextBreak
+                                ? nextBreak.duration
+                                : "✓"
+                        }
+
+                    </div>
+
+                </div>
+
+
+                ${
+                    nextBreak
+                        ? `
+                        <span class="break-summary-action">
+                            READY
+                        </span>
+                        `
+                        : `
+                        <span class="break-summary-action">
+                            ALL SENT
+                        </span>
+                        `
+                }
+
+            </div>
+
+        </div>
+
+        `
+        : ""
+}
+
 
             <div class="next-action">
 
@@ -701,6 +846,177 @@ function renderGames() {
                 }
 
             </div>
+
+            ${
+    game.commercialBreaks &&
+    game.commercialBreaks.length > 0
+        ? `
+
+        <div class="game-commercial-breaks">
+
+            <div class="game-commercial-breaks-header">
+
+                <span class="next-label">
+                    COMMERCIAL BREAKS
+                </span>
+
+            </div>
+
+
+            <div class="game-break-list">
+
+                ${game.commercialBreaks.map(
+                    (breakItem, breakIndex) => {
+
+                        const dropSlateComplete =
+                            game.completed.includes(
+                                "Drop Slate"
+                            );
+
+
+                        const gameEndComplete =
+                            game.completed.includes(
+                                "Game End Marker"
+                            );
+
+                            const nextBreakIndex =
+    game.commercialBreaks.findIndex(
+        breakItem => !breakItem.sent
+    );
+
+
+                        return `
+
+                            <div class="
+    game-break-row
+    ${
+        breakItem.sent
+            ? "game-break-sent"
+            : breakIndex === nextBreakIndex &&
+              dropSlateComplete &&
+              !gameEndComplete
+                ? "game-break-current"
+                : ""
+    }
+">
+
+                                <div class="game-break-left">
+
+                                    <span class="game-break-name">
+
+                                        ${
+                                            breakItem.sent
+                                                ? "✓"
+                                                : "○"
+                                        }
+
+                                        BREAK ${breakIndex + 1}
+
+                                    </span>
+
+
+                                    <button
+    class="game-break-duration"
+    onclick="
+        editBreakDuration(
+            ${index},
+            ${breakIndex}
+        )
+    "
+    title="Edit break duration"
+>
+
+    ${
+        breakItem.duration ||
+        "—"
+    }
+
+</button>
+
+                                </div>
+
+
+                                ${
+    breakItem.sent
+        ? `
+
+        <div class="game-break-actions">
+
+            <span class="game-break-status">
+
+                SENT
+
+            </span>
+
+            <button
+    class="revert-break-button"
+    onclick="
+        event.stopPropagation();
+        revertBreak(
+            ${index},
+            ${breakIndex}
+        )
+    "
+    title="Revert break"
+>
+
+    ↶
+
+</button>
+
+        </div>
+
+        `
+        : dropSlateComplete &&
+          !gameEndComplete &&
+          breakIndex === nextBreakIndex
+            ? `
+
+            <button
+                class="game-break-button"
+                onclick="
+                    markBreakSent(
+                        ${index},
+                        ${breakIndex}
+                    )
+                "
+            >
+
+                BREAK SENT
+
+            </button>
+
+            `
+            : `
+
+            <span class="game-break-status">
+
+                ${
+                    gameEndComplete
+                        ? "CLOSED"
+                        : !dropSlateComplete
+                            ? "WAITING"
+                            : "LOCKED"
+                }
+
+            </span>
+
+            `
+}
+                            </div>
+
+                        `;
+
+                    }
+                ).join("")}
+
+            </div>
+
+        </div>
+
+        `
+        : ""
+}
 
 
             <div class="progress-row">
@@ -780,15 +1096,32 @@ function renderGames() {
 
             <span class="step-status">
 
-                ${
-                    isComplete
-                        ? "DONE"
-                        : isCurrent
-                            ? "CURRENT"
-                            : ""
-                }
+    ${
+        isComplete
+            ? `
 
-            </span>
+                <button
+                    class="revert-step-button"
+                    onclick="
+                        event.stopPropagation();
+                        revertStep(
+                            ${index},
+                            '${step.replace(/'/g, "\\'")}'
+                        )
+                    "
+                >
+
+                    REVERT
+
+                </button>
+
+            `
+            : isCurrent
+                ? "CURRENT"
+                : ""
+    }
+
+</span>
 
         </div>
 
@@ -849,6 +1182,50 @@ function completeStep(gameIndex) {
         return;
     }
 
+    // --------------------------------------------------
+// COMMERCIAL BREAK CHECK
+// --------------------------------------------------
+
+if (next === "Game End Marker") {
+
+    const unsentBreaks =
+        (game.commercialBreaks || [])
+            .filter(breakItem => !breakItem.sent);
+
+
+    if (unsentBreaks.length > 0) {
+
+        const unsentNumbers =
+            unsentBreaks
+                .map(breakItem =>
+                    game.commercialBreaks.indexOf(
+                        breakItem
+                    ) + 1
+                );
+
+
+        const breakText =
+            unsentNumbers.length === 1
+                ? `Break ${unsentNumbers[0]}`
+                : `Breaks ${unsentNumbers.join(", ")}`;
+
+
+        const confirmed =
+            confirm(
+                `${breakText} has not been marked SENT.\n\nAre you sure you want to complete the Game End Marker?`
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+    }
+
+}
+
 
     game.completed.push(next);
 
@@ -878,6 +1255,221 @@ renderOperatorMode();
 
 }
 
+// --------------------------------------------------
+// COMMERCIAL BREAK TRACKING
+// --------------------------------------------------
+
+function markBreakSent(
+    gameIndex,
+    breakIndex
+) {
+
+    const game =
+        games[gameIndex];
+
+
+    if (!game) {
+        return;
+    }
+
+
+    if (
+        !game.commercialBreaks ||
+        !game.commercialBreaks[breakIndex]
+    ) {
+        return;
+    }
+
+
+    // Make sure all previous breaks
+    // have already been marked sent.
+
+    for (
+        let i = 0;
+        i < breakIndex;
+        i++
+    ) {
+
+        if (
+            !game.commercialBreaks[i].sent
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+    game.commercialBreaks[
+        breakIndex
+    ].sent = true;
+
+
+    saveGames(games);
+
+    renderGames();
+
+    renderOperatorMode();
+
+}
+
+
+// --------------------------------------------------
+// REVERT COMMERCIAL BREAK
+// --------------------------------------------------
+
+function revertBreak(gameIndex, breakIndex) {
+
+    const game = games[gameIndex];
+
+    if (!game) {
+        return;
+    }
+
+    if (
+        !game.commercialBreaks ||
+        !game.commercialBreaks[breakIndex]
+    ) {
+        return;
+    }
+
+    const breakItem =
+        game.commercialBreaks[breakIndex];
+
+    if (!breakItem.sent) {
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            `Revert Break ${breakIndex + 1}?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    breakItem.sent = false;
+
+    saveGames(games);
+
+    renderGames();
+
+    renderOperatorMode();
+
+}
+
+// --------------------------------------------------
+// EDIT COMMERCIAL BREAK DURATION
+// --------------------------------------------------
+
+function editBreakDuration(gameIndex, breakIndex) {
+
+    const game = games[gameIndex];
+
+    if (!game) {
+        return;
+    }
+
+    if (
+        !game.commercialBreaks ||
+        !game.commercialBreaks[breakIndex]
+    ) {
+        return;
+    }
+
+    const breakItem =
+        game.commercialBreaks[breakIndex];
+
+    const currentDuration =
+        breakItem.duration || "";
+
+    const newDuration =
+        prompt(
+            `Edit duration for Break ${breakIndex + 1}\n\nEnter duration (example: 2:00)`,
+            currentDuration
+        );
+
+    if (newDuration === null) {
+        return;
+    }
+
+    const cleanedDuration =
+        newDuration.trim();
+
+    if (!cleanedDuration) {
+        alert("Please enter a break duration.");
+        return;
+    }
+
+    breakItem.duration =
+        cleanedDuration;
+
+    saveGames(games);
+
+    renderGames();
+
+    renderOperatorMode();
+
+}
+
+// --------------------------------------------------
+// REVERT WORKFLOW STEP
+// --------------------------------------------------
+
+function revertStep(gameIndex, step) {
+
+    const game = games[gameIndex];
+
+    if (!game) {
+        return;
+    }
+
+    const completedIndex =
+        game.completed.indexOf(step);
+
+    if (completedIndex === -1) {
+        return;
+    }
+
+    const confirmed =
+        confirm(
+            `Revert "${step}"?`
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    game.completed.splice(
+        completedIndex,
+        1
+    );
+
+    // Restore appropriate game status
+
+    if (step === "Game End Marker") {
+
+        game.status = "LIVE";
+
+    }
+
+    if (
+        game.status === "COMPLETE"
+    ) {
+
+        game.status = "POST GAME";
+
+    }
+
+    saveGames(games);
+
+    renderGames();
+
+    renderOperatorMode();
+
+}
 
 // --------------------------------------------------
 // DELETE GAME
@@ -916,6 +1508,480 @@ function deleteGame(gameIndex) {
     renderGames();
 
 }
+
+// --------------------------------------------------
+// COMMERCIAL BREAKS
+// --------------------------------------------------
+
+const includeCommercialBreaks =
+    document.getElementById("includeCommercialBreaks");
+
+const commercialBreaksContainer =
+    document.getElementById("commercialBreaksContainer");
+
+const addBreakBtn =
+    document.getElementById("addBreakBtn");
+
+const breakList =
+    document.getElementById("breakList");
+
+
+// Show / hide commercial breaks
+
+includeCommercialBreaks.addEventListener(
+    "change",
+    () => {
+
+        if (includeCommercialBreaks.checked) {
+
+            commercialBreaksContainer.style.display =
+                "block";
+
+            // Add first break automatically
+
+            if (breakList.children.length === 0) {
+
+                addCommercialBreak();
+
+            }
+
+        } else {
+
+            commercialBreaksContainer.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+// Add a commercial break
+
+addBreakBtn.onclick = () => {
+
+    addCommercialBreak();
+
+};
+
+
+function addCommercialBreak() {
+
+    const breakNumber =
+        breakList.children.length + 1;
+
+
+    const breakRow =
+        document.createElement("div");
+
+
+    breakRow.className =
+        "commercial-break-row";
+
+
+    breakRow.innerHTML = `
+
+        <div class="commercial-break-label">
+
+            BREAK ${breakNumber}
+
+        </div>
+
+
+        <input
+            type="text"
+            class="commercial-break-duration"
+            placeholder="Duration (ex: 2:00)"
+        >
+
+
+        <button
+            type="button"
+            class="remove-break-button"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    breakRow
+        .querySelector(".remove-break-button")
+        .onclick = () => {
+
+            breakRow.remove();
+
+            renumberCommercialBreaks();
+
+        };
+
+
+    breakList.appendChild(
+        breakRow
+    );
+
+}
+
+
+// Keep break numbers organized
+
+function renumberCommercialBreaks() {
+
+    const rows =
+        breakList.querySelectorAll(
+            ".commercial-break-row"
+        );
+
+
+    rows.forEach(
+        (row, index) => {
+
+            row.querySelector(
+                ".commercial-break-label"
+            ).textContent =
+                `BREAK ${index + 1}`;
+
+        }
+    );
+
+}
+
+// --------------------------------------------------
+// SAVED CUSTOM WORKFLOW STEPS
+// --------------------------------------------------
+
+let customWorkflowSteps =
+    JSON.parse(
+        localStorage.getItem(
+            "multitaskedCustomWorkflowSteps"
+        )
+    ) || [];
+
+    function loadCustomWorkflowSteps() {
+
+    customWorkflowSteps.forEach(
+        stepName => {
+
+            addWorkflowStepToList(
+                stepName
+            );
+
+        }
+    );
+
+}
+
+function addWorkflowStepToList(stepName) {
+
+    const label =
+        document.createElement("label");
+
+    label.className =
+        "workflow-option";
+
+    label.draggable = true;
+
+    label.innerHTML = `
+
+        <span class="workflow-drag-handle">
+            ⋮⋮
+        </span>
+
+        <input
+            type="checkbox"
+            value="${stepName}"
+            checked
+        >
+
+        <span>
+            ${stepName}
+        </span>
+
+        <button
+            type="button"
+            class="remove-workflow-step"
+            title="Remove workflow step"
+        >
+            ×
+        </button>
+
+    `;
+
+
+    label
+        .querySelector(
+            ".remove-workflow-step"
+        )
+        .onclick = () => {
+
+            label.remove();
+
+
+            customWorkflowSteps =
+                customWorkflowSteps.filter(
+                    step =>
+                        step.toLowerCase() !==
+                        stepName.toLowerCase()
+                );
+
+
+            localStorage.setItem(
+                "multitaskedCustomWorkflowSteps",
+                JSON.stringify(
+                    customWorkflowSteps
+                )
+            );
+
+        };
+
+
+    workflowOptions.appendChild(
+        label
+    );
+
+}
+
+// --------------------------------------------------
+// CUSTOM WORKFLOW STEPS
+// --------------------------------------------------
+
+const addWorkflowStep =
+    document.getElementById("addWorkflowStep");
+
+const customWorkflowStep =
+    document.getElementById("customWorkflowStep");
+
+const workflowOptions =
+    document.getElementById("workflowOptions");
+
+    loadCustomWorkflowSteps();
+
+
+addWorkflowStep.onclick = () => {
+
+    const stepName =
+        customWorkflowStep.value.trim();
+
+
+    if (!stepName) {
+
+        alert(
+            "Please enter a workflow step."
+        );
+
+        return;
+
+    }
+
+
+    const existingSteps =
+        Array.from(
+            workflowOptions.querySelectorAll(
+                "input[type='checkbox']"
+            )
+        ).map(
+            checkbox =>
+                checkbox.value.toLowerCase()
+        );
+
+
+    if (
+        existingSteps.includes(
+            stepName.toLowerCase()
+        )
+    ) {
+
+        alert(
+            "That workflow step already exists."
+        );
+
+        return;
+
+    }
+
+
+    // Add to the visible workflow
+
+    addWorkflowStepToList(
+        stepName
+    );
+
+
+    // Save permanently
+
+    customWorkflowSteps.push(
+        stepName
+    );
+
+
+    localStorage.setItem(
+        "multitaskedCustomWorkflowSteps",
+        JSON.stringify(
+            customWorkflowSteps
+        )
+    );
+
+
+    customWorkflowStep.value = "";
+
+    customWorkflowStep.focus();
+
+};
+
+// --------------------------------------------------
+// DRAG AND DROP WORKFLOW ORDER
+// --------------------------------------------------
+
+let draggedWorkflowStep = null;
+
+
+workflowOptions.addEventListener(
+    "dragstart",
+    event => {
+
+        const step =
+            event.target.closest(
+                ".workflow-option"
+            );
+
+        if (!step) {
+            return;
+        }
+
+        draggedWorkflowStep = step;
+
+        step.classList.add(
+            "dragging"
+        );
+
+    }
+);
+
+
+workflowOptions.addEventListener(
+    "dragover",
+    event => {
+
+        event.preventDefault();
+
+        const target =
+            event.target.closest(
+                ".workflow-option"
+            );
+
+        if (
+            !target ||
+            target === draggedWorkflowStep
+        ) {
+            return;
+        }
+
+        document
+            .querySelectorAll(
+                ".workflow-option"
+            )
+            .forEach(step => {
+
+                step.classList.remove(
+                    "drag-over"
+                );
+
+            });
+
+
+        target.classList.add(
+            "drag-over"
+        );
+
+    }
+);
+
+
+workflowOptions.addEventListener(
+    "drop",
+    event => {
+
+        event.preventDefault();
+
+        const target =
+            event.target.closest(
+                ".workflow-option"
+            );
+
+
+        if (
+            !target ||
+            !draggedWorkflowStep ||
+            target === draggedWorkflowStep
+        ) {
+            return;
+        }
+
+
+        const rect =
+            target.getBoundingClientRect();
+
+
+        const insertBefore =
+            event.clientY <
+            rect.top + rect.height / 2;
+
+
+        if (insertBefore) {
+
+            workflowOptions.insertBefore(
+                draggedWorkflowStep,
+                target
+            );
+
+        } else {
+
+            workflowOptions.insertBefore(
+                draggedWorkflowStep,
+                target.nextSibling
+            );
+
+        }
+
+
+        target.classList.remove(
+            "drag-over"
+        );
+
+    }
+);
+
+
+workflowOptions.addEventListener(
+    "dragend",
+    () => {
+
+        if (draggedWorkflowStep) {
+
+            draggedWorkflowStep.classList.remove(
+                "dragging"
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".workflow-option"
+            )
+            .forEach(step => {
+
+                step.classList.remove(
+                    "drag-over"
+                );
+
+            });
+
+
+        draggedWorkflowStep = null;
+
+    }
+);
 
 
 // --------------------------------------------------
@@ -1013,7 +2079,26 @@ if (sport === "__custom__") {
         }
 
 
-       const newGame = {
+       const commercialBreaks =
+    includeCommercialBreaks.checked
+        ? Array.from(
+            breakList.querySelectorAll(
+                ".commercial-break-row"
+            )
+        ).map(row => ({
+
+            duration:
+                row.querySelector(
+                    ".commercial-break-duration"
+                ).value.trim(),
+
+            sent: false
+
+        }))
+        : [];
+
+
+const newGame = {
 
     name,
 
@@ -1027,7 +2112,9 @@ if (sport === "__custom__") {
 
     steps,
 
-    completed: []
+    completed: [],
+
+    commercialBreaks
 
 };
 
@@ -1062,6 +2149,12 @@ document
 document
     .getElementById("customSport")
     .style.display = "none";
+
+    includeCommercialBreaks.checked = false;
+
+commercialBreaksContainer.style.display = "none";
+
+breakList.innerHTML = "";
 
 
         modal.style.display = "none";
@@ -1195,6 +2288,173 @@ function renderOperatorMode() {
                     </span>
 
                 </div>
+
+                ${
+    game.commercialBreaks &&
+    game.commercialBreaks.length > 0
+        ? `
+
+        <div class="operator-breaks">
+
+            <div class="operator-breaks-title">
+                COMMERCIAL BREAKS
+            </div>
+
+
+            <div class="operator-break-list">
+
+                ${game.commercialBreaks.map(
+                    (breakItem, breakIndex) => {
+
+                        const dropSlateComplete =
+                            game.completed.includes(
+                                "Drop Slate"
+                            );
+
+
+                        const gameEndComplete =
+                            game.completed.includes(
+                                "Game End Marker"
+                            );
+                            
+                            const nextBreakIndex =
+    game.commercialBreaks.findIndex(
+        breakItem => !breakItem.sent
+    );
+
+                        return `
+
+                            <div class="
+    operator-break
+    ${
+        breakItem.sent
+            ? "operator-break-sent"
+            : breakIndex === nextBreakIndex &&
+              dropSlateComplete &&
+              !gameEndComplete
+                ? "operator-break-current"
+                : ""
+    }
+">
+
+                                <div class="operator-break-info">
+
+                                    <span class="operator-break-name">
+
+                                        ${
+                                            breakItem.sent
+                                                ? "✓"
+                                                : "○"
+                                        }
+
+                                        BREAK ${breakIndex + 1}
+
+                                    </span>
+
+
+                                    <button
+    class="operator-break-duration"
+    onclick="
+        editBreakDuration(
+            ${index},
+            ${breakIndex}
+        )
+    "
+    title="Edit break duration"
+>
+
+    ${
+        breakItem.duration ||
+        "—"
+    }
+
+</button>
+
+                                </div>
+
+
+                              ${
+    breakItem.sent
+        ? `
+
+        <div class="operator-break-actions">
+
+            <span class="operator-break-status">
+
+                SENT
+
+            </span>
+
+            <button
+    class="operator-revert-break-button"
+    onclick="
+        event.stopPropagation();
+        revertBreak(
+            ${index},
+            ${breakIndex}
+        )
+    "
+    title="Revert break"
+>
+
+    ↶
+
+</button>
+
+        </div>
+
+        `
+        : dropSlateComplete &&
+          !gameEndComplete &&
+          breakIndex === nextBreakIndex
+            ? `
+
+            <button
+                class="operator-break-button"
+                onclick="
+                    markBreakSent(
+                        ${index},
+                        ${breakIndex}
+                    )
+                "
+            >
+
+                BREAK SENT
+
+            </button>
+
+            `
+            : `
+
+            <span class="operator-break-status">
+
+                ${
+                    gameEndComplete
+                        ? "CLOSED"
+                        : !dropSlateComplete
+                            ? "WAITING"
+                            : "LOCKED"
+                }
+
+            </span>
+
+            `
+}
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("")}
+
+            </div>
+
+        </div>
+
+        `
+        : ""
+}
 
 
                 ${

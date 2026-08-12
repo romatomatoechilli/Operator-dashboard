@@ -1798,3 +1798,612 @@ h2 {
         min-width: 0;
     }
 }
+
+/* --------------------------------------------------
+   COMMERCIAL BREAKS
+-------------------------------------------------- */
+
+.game-commercial-breaks {
+    margin-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 14px;
+}
+
+
+.game-commercial-breaks-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+.game-commercial-breaks-header .next-label {
+    margin: 0;
+}
+
+
+.game-break-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+
+.game-break-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 42px;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+
+.game-break-left {
+    display: grid;
+    grid-template-columns: 90px 65px;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.game-break-name {
+    min-width: 82px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+
+.game-break-duration {
+    min-width: 58px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    opacity: 1;
+}
+
+.game-break-status {
+    min-width: 72px;
+    text-align: right;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+}
+
+
+.game-break-sent {
+    opacity: 0.65;
+}
+
+
+.game-break-button {
+    min-width: 100px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+
+.game-break-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* --------------------------------------------------
+   OPERATOR MODE BREAKS
+-------------------------------------------------- */
+
+.operator-breaks {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.operator-breaks-title {
+    margin-bottom: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    opacity: 0.55;
+}
+
+
+.operator-break-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.operator-break {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 36px;
+    padding: 0 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+
+.operator-break-info {
+    display: grid;
+    grid-template-columns: 72px 52px;
+    align-items: center;
+    gap: 10px;
+}
+
+.operator-break-name {
+    min-width: 72px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+
+.operator-break-duration {
+    min-width: 52px;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    opacity: 1;
+}
+
+
+.operator-break-status {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+}
+
+
+.operator-break-sent {
+    opacity: 0.55;
+}
+
+
+.operator-break-button {
+    min-width: 90px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    background: transparent;
+    color: inherit;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+
+.operator-break-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------
+   BREAK TIME EMPHASIS
+-------------------------------------------------- */
+
+.game-break-duration {
+    min-width: 58px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    text-align: center;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    opacity: 1;
+}
+
+
+.operator-break-duration {
+    min-width: 52px;
+    padding: 5px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    opacity: 1;
+}
+
+/* --------------------------------------------------
+   EDITABLE BREAK DURATION
+-------------------------------------------------- */
+
+.game-break-duration,
+.operator-break-duration {
+    cursor: pointer;
+    color: inherit;
+    font-family: inherit;
+}
+
+.game-break-duration:hover,
+.operator-break-duration:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* --------------------------------------------------
+   REVERT STEP
+-------------------------------------------------- */
+
+.revert-step-button {
+    border: none;
+    background: transparent;
+    color: inherit;
+    opacity: 0.35;
+    font-family: inherit;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    cursor: pointer;
+}
+
+
+.revert-step-button:hover {
+    opacity: 1;
+}
+
+/* --------------------------------------------------
+   BREAK ACTIONS
+-------------------------------------------------- */
+
+.game-break-actions,
+.operator-break-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* --------------------------------------------------
+   BREAK REVERT ARROW
+-------------------------------------------------- */
+
+.revert-break-button,
+.operator-revert-break-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    opacity: 0.35;
+    font-family: inherit;
+    font-size: 17px;
+    line-height: 1;
+    cursor: pointer;
+    transition: opacity 0.15s ease,
+                transform 0.15s ease;
+}
+
+
+.revert-break-button:hover,
+.operator-revert-break-button:hover {
+    opacity: 1;
+    transform: scale(1.12);
+}
+
+/* --------------------------------------------------
+   CURRENT COMMERCIAL BREAK
+-------------------------------------------------- */
+
+.game-break-current {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+
+.operator-break-current {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+/* CURRENT ACTIVE COMMERCIAL BREAK */
+
+.game-break-current {
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 18px rgba(255, 255, 255, 0.16) !important;
+}
+
+.game-break-current .game-break-duration {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+
+/* OPERATOR MODE */
+
+.operator-break-current {
+    border: 1px solid rgba(255, 255, 255, 0.55) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 15px rgba(255, 255, 255, 0.16) !important;
+}
+
+.operator-break-current .operator-break-duration {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* --------------------------------------------------
+   COMMERCIAL BREAK SUMMARY
+-------------------------------------------------- */
+
+.break-summary {
+    margin-top: 16px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+
+.break-summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+
+.break-summary-count {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+}
+
+
+.break-summary-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.break-summary-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    opacity: 0.45;
+}
+
+
+.break-summary-time {
+    display: inline-block;
+    padding: 5px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.07);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+
+.break-summary-action {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.45;
+}
+
+/* --------------------------------------------------
+   WORKFLOW BUILDER
+-------------------------------------------------- */
+
+.workflow-header {
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+
+.workflow-subtitle {
+    margin-top: 4px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+}
+
+
+.workflow-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+
+.workflow-option span {
+    flex: 1;
+}
+
+
+.remove-workflow-step {
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: transparent;
+    color: inherit;
+    opacity: 0.3;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+.remove-workflow-step:hover {
+    opacity: 1;
+}
+
+
+.add-workflow-step {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+
+.add-workflow-step input {
+    flex: 1;
+}
+
+
+.add-workflow-step button {
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+}
+
+
+.add-workflow-step button:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+/* --------------------------------------------------
+   DRAGGABLE WORKFLOW STEPS
+-------------------------------------------------- */
+
+.workflow-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: grab;
+    user-select: none;
+}
+
+
+.workflow-option:active {
+    cursor: grabbing;
+}
+
+
+.workflow-drag-handle {
+    width: 18px;
+    text-align: center;
+    opacity: 0.35;
+    font-size: 13px;
+    cursor: grab;
+}
+
+
+.workflow-option:hover .workflow-drag-handle {
+    opacity: 0.8;
+}
+
+
+.workflow-option.dragging {
+    opacity: 0.45;
+}
+
+
+.workflow-option.drag-over {
+    border-top: 1px solid rgba(255,255,255,0.35);
+}
+
+/* --------------------------------------------------
+   WORKFLOW TEMPLATES
+-------------------------------------------------- */
+
+.workflow-template {
+    margin-bottom: 14px;
+}
+
+
+.workflow-template label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+}
+
+
+.workflow-template-row {
+    display: flex;
+    gap: 6px;
+}
+
+
+.workflow-template-row select {
+    flex: 1;
+}
+
+
+#deleteWorkflowTemplate {
+    width: 34px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+
+#deleteWorkflowTemplate:hover {
+    opacity: 1;
+}
+
+
+.save-template-row {
+    margin-top: 10px;
+}
+
+
+#saveWorkflowTemplate {
+    width: 100%;
+    padding: 8px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+
+#saveWorkflowTemplate:hover {
+    background: rgba(255,255,255,0.05);
+}

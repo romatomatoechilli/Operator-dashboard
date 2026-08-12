@@ -289,14 +289,18 @@
     <option value="Soccer">Soccer</option>
     <option value="UFC">UFC</option>
     <option value="Rugby">Rugby</option>
-    <option value="__custom__">+ ADD NEW SPORT</option>
+
+    <option value="__custom__">
+        + ADD NEW SPORT
+    </option>
 
 </select>
+
 
 <input
     id="customSport"
     type="text"
-    placeholder="Enter sport name"
+    placeholder="Enter new sport name..."
     style="display: none;"
 >
 <label>
@@ -317,93 +321,331 @@
             type="time"
         >
 
+        <!-- COMMERCIAL BREAKS -->
+
+<div class="commercial-breaks-section">
+
+    <label class="commercial-toggle">
+
+        <input
+            type="checkbox"
+            id="includeCommercialBreaks"
+        >
+
+        <span>
+            INCLUDE COMMERCIAL BREAKS
+        </span>
+
+    </label>
+
+
+    <div
+        id="commercialBreaksContainer"
+        class="commercial-breaks-container"
+        style="display: none;"
+    >
+
+        <div class="commercial-breaks-header">
+
+            <div class="workflow-title">
+                COMMERCIAL BREAKS
+            </div>
+
+            <button
+                type="button"
+                id="addBreakBtn"
+                class="add-break-button"
+            >
+                + ADD BREAK
+            </button>
+
+        </div>
+
+
+        <div id="breakList">
+
+            <!-- Breaks will be added here -->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- WORKFLOW BUILDER -->
+
+
+
+<div class="workflow-header">
+
+    <div>
 
         <div class="workflow-title">
             WORKFLOW
         </div>
 
-
-        <div class="workflow-options">
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Preslate"
-                    checked
-                >
-                Preslate
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Drop Slate"
-                    checked
-                >
-                Drop Slate
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Game End Marker"
-                    checked
-                >
-                Game End Marker
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Post Slate"
-                    checked
-                >
-                Post Slate
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Broadcast End"
-                    checked
-                >
-                Broadcast End
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Expiration"
-                    checked
-                >
-                Expiration
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="JAB"
-                >
-                JAB
-            </label>
-
-
-            <label>
-                <input
-                    type="checkbox"
-                    value="Clip"
-                >
-                Clip
-            </label>
-
+        <div class="workflow-subtitle">
+            SELECT THE STEPS NEEDED FOR THIS EVENT
         </div>
 
+    </div>
+
+</div>
+
+
+
+
+<div
+    id="workflowOptions"
+    class="workflow-options"
+>
+
+    <!-- STANDARD WORKFLOW STEPS -->
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Preslate"
+            checked
+        >
+
+        <span>
+            Preslate
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Drop Slate"
+            checked
+        >
+
+        <span>
+            Drop Slate
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Game End Marker"
+            checked
+        >
+
+        <span>
+            Game End Marker
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Post Slate"
+            checked
+        >
+
+        <span>
+            Post Slate
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Broadcast End"
+            checked
+        >
+
+        <span>
+            Broadcast End
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Expiration"
+            checked
+        >
+
+        <span>
+            Expiration
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="JAB"
+        >
+
+        <span>
+            JAB
+        </span>
+
+    </label>
+
+
+    <label
+    class="workflow-option"
+    draggable="true"
+>
+
+    <span class="workflow-drag-handle">
+        ⋮⋮
+    </span>
+
+        <input
+            type="checkbox"
+            value="Clip"
+        >
+
+        <span>
+            Clip
+        </span>
+
+    </label>
+
+</div>
+
+
+<!-- ADD CUSTOM STEP -->
+
+<div class="add-workflow-step">
+
+    <input
+        id="customWorkflowStep"
+        type="text"
+        placeholder="Add custom workflow step..."
+    >
+
+    <button
+        id="addWorkflowStep"
+        type="button"
+    >
+        + ADD STEP
+    </button>
+
+</div>
+
+<!-- WORKFLOW TEMPLATES -->
+
+<div class="workflow-templates">
+
+    <div class="workflow-template-header">
+
+        <div>
+            <div class="workflow-title">
+                WORKFLOW TEMPLATE
+            </div>
+
+            <div class="workflow-subtitle">
+                SAVE OR LOAD A WORKFLOW CONFIGURATION
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="workflow-template-controls">
+
+        <select id="workflowTemplate">
+
+            <option value="">
+                CUSTOM WORKFLOW
+            </option>
+
+        </select>
+
+
+        <button
+            type="button"
+            id="saveWorkflowTemplate"
+        >
+            SAVE TEMPLATE
+        </button>
+
+
+        <button
+            type="button"
+            id="deleteWorkflowTemplate"
+        >
+            DELETE
+        </button>
+
+    </div>
+
+</div>
 
         <button
             id="createGame"
