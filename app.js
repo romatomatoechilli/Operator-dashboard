@@ -10,9 +10,12 @@ const addGameBtn =
 
 const modal =
     document.getElementById("gameModal");
+    
 
 const closeModal =
     document.getElementById("closeModal");
+
+    
 
 const container =
     document.getElementById("gameContainer");
@@ -20,6 +23,7 @@ const container =
 const attentionList =
     document.getElementById("attentionList");
 
+    
 
     
 // --------------------------------------------------
@@ -1920,14 +1924,13 @@ addWorkflowStep.onclick = () => {
 let draggedWorkflowStep = null;
 
 
+// START DRAG
 workflowOptions.addEventListener(
     "dragstart",
     event => {
 
         const step =
-            event.target.closest(
-                ".workflow-option"
-            );
+            event.target.closest(".workflow-option");
 
         if (!step) {
             return;
@@ -1935,24 +1938,30 @@ workflowOptions.addEventListener(
 
         draggedWorkflowStep = step;
 
-        step.classList.add(
-            "dragging"
+        event.dataTransfer.effectAllowed = "move";
+
+        event.dataTransfer.setData(
+            "text/plain",
+            "workflow-step"
         );
+
+        step.classList.add("dragging");
 
     }
 );
 
 
+// DRAG OVER
 workflowOptions.addEventListener(
     "dragover",
     event => {
 
         event.preventDefault();
 
+        event.dataTransfer.dropEffect = "move";
+
         const target =
-            event.target.closest(
-                ".workflow-option"
-            );
+            event.target.closest(".workflow-option");
 
         if (
             !target ||
@@ -1961,10 +1970,9 @@ workflowOptions.addEventListener(
             return;
         }
 
+
         document
-            .querySelectorAll(
-                ".workflow-option"
-            )
+            .querySelectorAll(".workflow-option")
             .forEach(step => {
 
                 step.classList.remove(
@@ -1982,16 +1990,18 @@ workflowOptions.addEventListener(
 );
 
 
+// DROP
 workflowOptions.addEventListener(
     "drop",
     event => {
 
         event.preventDefault();
 
+        event.stopPropagation();
+
+
         const target =
-            event.target.closest(
-                ".workflow-option"
-            );
+            event.target.closest(".workflow-option");
 
 
         if (
@@ -2037,6 +2047,7 @@ workflowOptions.addEventListener(
 );
 
 
+// END DRAG
 workflowOptions.addEventListener(
     "dragend",
     () => {
@@ -2051,9 +2062,7 @@ workflowOptions.addEventListener(
 
 
         document
-            .querySelectorAll(
-                ".workflow-option"
-            )
+            .querySelectorAll(".workflow-option")
             .forEach(step => {
 
                 step.classList.remove(
@@ -2067,6 +2076,8 @@ workflowOptions.addEventListener(
 
     }
 );
+
+
 
 
 // --------------------------------------------------
@@ -2260,58 +2271,27 @@ renderGames();
 // --------------------------------------------------
 // UPDATE DROP SLATE CLOCK
 // --------------------------------------------------
-
-
 // --------------------------------------------------
-// TEMPLATE MANAGER
+// TEMPLATES
 // --------------------------------------------------
 
-const manageTemplatesBtn =
-    document.getElementById("manageTemplatesBtn");
+const templatesBtn =
+    document.getElementById("templatesBtn");
 
-const templateModal =
-    document.getElementById("templateModal");
+const templatesPanel =
+    document.getElementById("templatesPanel");
 
-const closeTemplateModal =
-    document.getElementById("closeTemplateModal");
+const closeTemplates =
+    document.getElementById("closeTemplates");
 
-
-manageTemplatesBtn.onclick = () => {
-
-    templateModal.style.display = "flex";
-
-};
-
-
-closeTemplateModal.onclick = () => {
-
-    templateModal.style.display = "none";
-
-};
-
-
-window.addEventListener(
-    "click",
-    (event) => {
-
-        if (event.target === templateModal) {
-
-            templateModal.style.display = "none";
-
-        }
-
-    }
-);
-
-// --------------------------------------------------
-// CREATE TEMPLATE
-// --------------------------------------------------
-
-const createTemplateBtn =
-    document.getElementById("createTemplateBtn");
+const templateList =
+    document.getElementById("templateList");
 
 const createTemplateModal =
     document.getElementById("createTemplateModal");
+
+const createTemplateBtn =
+    document.getElementById("createTemplateBtn");
 
 const closeCreateTemplateModal =
     document.getElementById("closeCreateTemplateModal");
@@ -2319,44 +2299,520 @@ const closeCreateTemplateModal =
 const cancelCreateTemplate =
     document.getElementById("cancelCreateTemplate");
 
+const templateWorkflowOptions =
+    document.getElementById("templateWorkflowOptions");
 
-createTemplateBtn.onclick = () => {
-
-    loadTemplateWorkflowOptions();
-
-    createTemplateModal.style.display =
-        "flex";
-
-};
+const saveTemplateBtn =
+    document.getElementById("saveTemplateBtn");
 
 
-closeCreateTemplateModal.onclick = () => {
+// --------------------------------------------------
+// OPEN TEMPLATES PANEL
+// --------------------------------------------------
 
-    createTemplateModal.style.display =
-        "none";
+if (templatesBtn) {
 
-};
+    templatesBtn.onclick = () => {
+
+        renderTemplates();
+
+        templatesPanel.classList.add(
+            "templates-visible"
+        );
+
+    };
+
+}
 
 
-cancelCreateTemplate.onclick = () => {
+// --------------------------------------------------
+// CLOSE TEMPLATES PANEL
+// --------------------------------------------------
 
-    createTemplateModal.style.display =
-        "none";
+if (closeTemplates) {
 
-};
+    closeTemplates.onclick = () => {
+
+        templatesPanel.classList.remove(
+            "templates-visible"
+        );
+
+    };
+
+}
+
+
+// --------------------------------------------------
+// RENDER SAVED TEMPLATES
+// --------------------------------------------------
+
+function renderTemplates() {
+
+    if (!templateList) {
+        return;
+    }
+
+
+    const savedTemplates =
+        JSON.parse(
+            localStorage.getItem(
+                "multitaskedTemplates"
+            )
+        ) || [];
+
+
+    if (savedTemplates.length === 0) {
+
+        templateList.innerHTML = `
+
+            <div class="empty-templates">
+
+                No templates created yet.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    templateList.innerHTML =
+        savedTemplates.map(
+            (template, index) => {
+
+                const workflow =
+                    template.workflow || [];
+
+
+                const enabledSteps =
+                    workflow.filter(
+                        step => step.enabled
+                    );
+
+
+                return `
+
+                    <div class="template-card">
+
+                        <div class="template-card-info">
+
+                            <div class="template-card-name">
+
+                                ${template.name}
+
+                            </div>
+
+
+                            <div class="template-card-sport">
+
+                                ${template.sport}
+
+                            </div>
+
+
+                            <div class="template-workflow">
+
+                                ${
+                                    enabledSteps.length > 0
+
+                                        ? enabledSteps
+                                            .map(
+                                                step =>
+                                                    `
+                                                    <span class="template-step">
+                                                        ${step.name}
+                                                    </span>
+                                                    `
+                                            )
+                                            .join("")
+
+                                        : `
+                                            <span class="template-step">
+                                                No workflow steps
+                                            </span>
+                                        `
+                                }
+
+                            </div>
+
+
+                            ${
+                                template.includeCommercialBreaks
+
+                                    ? `
+                                        <div class="template-commercial-badge">
+                                            COMMERCIAL BREAKS
+                                        </div>
+                                    `
+
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="template-card-actions">
+
+                            <button
+                                type="button"
+                                class="template-use-button"
+                                onclick="useTemplate(${index})"
+                            >
+                                USE
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="template-delete-button"
+                                onclick="deleteTemplate(${index})"
+                            >
+                                DELETE
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+// --------------------------------------------------
+// DELETE TEMPLATE
+// --------------------------------------------------
+
+function deleteTemplate(index) {
+
+    const savedTemplates =
+        JSON.parse(
+            localStorage.getItem(
+                "multitaskedTemplates"
+            )
+        ) || [];
+
+
+    const template =
+        savedTemplates[index];
+
+
+    if (!template) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete "${template.name}" template?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    savedTemplates.splice(
+        index,
+        1
+    );
+
+
+    localStorage.setItem(
+        "multitaskedTemplates",
+        JSON.stringify(
+            savedTemplates
+        )
+    );
+
+
+    renderTemplates();
+
+}
+
+
+// --------------------------------------------------
+// USE TEMPLATE
+// --------------------------------------------------
+
+function useTemplate(index) {
+
+    const savedTemplates =
+        JSON.parse(
+            localStorage.getItem(
+                "multitaskedTemplates"
+            )
+        ) || [];
+
+
+    const template =
+        savedTemplates[index];
+
+
+    if (!template) {
+        return;
+    }
+
+
+    // Close templates panel
+
+    if (templatesPanel) {
+
+        templatesPanel.classList.remove(
+            "templates-visible"
+        );
+
+    }
+
+
+    // Open Add Game modal
+
+    if (modal) {
+
+        modal.style.display = "flex";
+
+    }
+
+
+    // Fill template name / sport
+
+    const sportElement =
+        document.getElementById("sport");
+
+    const customSportElement =
+        document.getElementById("customSport");
+
+
+    if (sportElement) {
+
+        const matchingSport =
+            Array.from(
+                sportElement.options
+            ).find(
+                option =>
+                    option.value ===
+                    template.sport
+            );
+
+
+        if (matchingSport) {
+
+            sportElement.value =
+                template.sport;
+
+            if (customSportElement) {
+
+                customSportElement.style.display =
+                    "none";
+
+                customSportElement.value = "";
+
+            }
+
+        } else {
+
+            sportElement.value =
+                "__custom__";
+
+
+            if (customSportElement) {
+
+                customSportElement.style.display =
+                    "block";
+
+                customSportElement.value =
+                    template.sport;
+
+            }
+
+        }
+
+    }
+
+
+    // Apply workflow steps
+
+    const workflowOptionsElement =
+        document.getElementById(
+            "workflowOptions"
+        );
+
+
+    if (workflowOptionsElement) {
+
+        const templateWorkflow =
+            template.workflow || [];
+
+
+        const templateStepMap =
+            {};
+
+
+        templateWorkflow.forEach(
+            step => {
+
+                templateStepMap[
+                    step.name
+                ] = step.enabled;
+
+            }
+        );
+
+
+        workflowOptionsElement
+            .querySelectorAll(
+                "input[type='checkbox']"
+            )
+            .forEach(
+                checkbox => {
+
+                    if (
+                        Object.prototype.hasOwnProperty.call(
+                            templateStepMap,
+                            checkbox.value
+                        )
+                    ) {
+
+                        checkbox.checked =
+                            templateStepMap[
+                                checkbox.value
+                            ];
+
+                    } else {
+
+                        checkbox.checked =
+                            false;
+
+                    }
+
+                }
+            );
+
+    }
+
+
+    // Apply commercial-break setting
+
+    const commercialBreakCheckbox =
+        document.getElementById(
+            "includeCommercialBreaks"
+        );
+
+
+    const commercialBreaksContainer =
+        document.getElementById(
+            "commercialBreaksContainer"
+        );
+
+
+    const breakListElement =
+        document.getElementById(
+            "breakList"
+        );
+
+
+    if (commercialBreakCheckbox) {
+
+        commercialBreakCheckbox.checked =
+            template.includeCommercialBreaks === true;
+
+
+        if (
+            template.includeCommercialBreaks
+        ) {
+
+            commercialBreaksContainer.style.display =
+                "block";
+
+            if (
+                breakListElement &&
+                breakListElement.children.length === 0
+            ) {
+
+                addCommercialBreak();
+
+            }
+
+        } else {
+
+            commercialBreaksContainer.style.display =
+                "none";
+
+            if (breakListElement) {
+
+                breakListElement.innerHTML = "";
+
+            }
+
+        }
+
+    }
+
+}
+
+
+// --------------------------------------------------
+// CREATE TEMPLATE MODAL
+// --------------------------------------------------
+
+if (createTemplateBtn) {
+
+    createTemplateBtn.onclick = () => {
+
+        loadTemplateWorkflowOptions();
+
+        createTemplateModal.style.display =
+            "flex";
+
+    };
+
+}
+
+
+if (closeCreateTemplateModal) {
+
+    closeCreateTemplateModal.onclick = () => {
+
+        createTemplateModal.style.display =
+            "none";
+
+    };
+
+}
+
+
+if (cancelCreateTemplate) {
+
+    cancelCreateTemplate.onclick = () => {
+
+        createTemplateModal.style.display =
+            "none";
+
+    };
+
+}
 
 
 // --------------------------------------------------
 // TEMPLATE WORKFLOW BUILDER
 // --------------------------------------------------
 
-const templateWorkflowOptions =
-    document.getElementById("templateWorkflowOptions");
-
-
 function loadTemplateWorkflowOptions() {
 
+    if (!templateWorkflowOptions) {
+        return;
+    }
+
+
     templateWorkflowOptions.innerHTML = "";
+
 
     const existingWorkflowSteps =
         workflowOptions.querySelectorAll(
@@ -2372,6 +2828,7 @@ function loadTemplateWorkflowOptions() {
                     "input[type='checkbox']"
                 );
 
+
             if (!originalCheckbox) {
                 return;
             }
@@ -2382,7 +2839,9 @@ function loadTemplateWorkflowOptions() {
 
 
             const label =
-                document.createElement("label");
+                document.createElement(
+                    "label"
+                );
 
 
             label.className =
@@ -2401,7 +2860,11 @@ function loadTemplateWorkflowOptions() {
                 <input
                     type="checkbox"
                     value="${stepName}"
-                    ${originalCheckbox.checked ? "checked" : ""}
+                    ${
+                        originalCheckbox.checked
+                            ? "checked"
+                            : ""
+                    }
                 >
 
                 <span>
@@ -2419,6 +2882,185 @@ function loadTemplateWorkflowOptions() {
     );
 
 }
+
+
+// --------------------------------------------------
+// SAVE TEMPLATE
+// --------------------------------------------------
+
+if (saveTemplateBtn) {
+
+    saveTemplateBtn.onclick = () => {
+
+        const templateName =
+            document
+                .getElementById("templateName")
+                .value
+                .trim();
+
+
+        if (!templateName) {
+
+            alert(
+                "Please enter a template name."
+            );
+
+            return;
+
+        }
+
+
+        const templateSport =
+            document
+                .getElementById("templateSport")
+                .value;
+
+
+        const workflowSteps =
+            Array.from(
+                templateWorkflowOptions.querySelectorAll(
+                    ".workflow-option"
+                )
+            ).map(
+                step => {
+
+                    const checkbox =
+                        step.querySelector(
+                            "input[type='checkbox']"
+                        );
+
+
+                    return {
+
+                        name:
+                            checkbox.value,
+
+                        enabled:
+                            checkbox.checked
+
+                    };
+
+                }
+            );
+
+
+        const includeCommercials =
+            document
+                .getElementById(
+                    "templateIncludeCommercials"
+                )
+                .checked;
+
+
+        const newTemplate = {
+
+            id: Date.now(),
+
+            name:
+                templateName,
+
+            sport:
+                templateSport,
+
+            workflow:
+                workflowSteps,
+
+            includeCommercialBreaks:
+                includeCommercials
+
+        };
+
+
+        const savedTemplates =
+            JSON.parse(
+                localStorage.getItem(
+                    "multitaskedTemplates"
+                )
+            ) || [];
+
+
+        savedTemplates.push(
+            newTemplate
+        );
+
+
+        localStorage.setItem(
+            "multitaskedTemplates",
+            JSON.stringify(
+                savedTemplates
+            )
+        );
+
+
+        alert(
+            `"${templateName}" template saved.`
+        );
+
+
+        createTemplateModal.style.display =
+            "none";
+
+
+        renderTemplates();
+
+    };
+
+}
+
+
+// --------------------------------------------------
+// TEMPLATE SPORT — CUSTOM SPORT
+// --------------------------------------------------
+
+const templateSport =
+    document.getElementById(
+        "templateSport"
+    );
+
+
+const templateCustomSport =
+    document.getElementById(
+        "templateCustomSport"
+    );
+
+
+if (templateSport) {
+
+    templateSport.addEventListener(
+        "change",
+        () => {
+
+            if (
+                templateSport.value ===
+                "__custom__"
+            ) {
+
+                templateCustomSport.style.display =
+                    "block";
+
+                templateCustomSport.focus();
+
+            } else {
+
+                templateCustomSport.style.display =
+                    "none";
+
+                templateCustomSport.value =
+                    "";
+
+            }
+
+        }
+    );
+
+}
+
+
+// --------------------------------------------------
+// INITIAL TEMPLATE RENDER
+// --------------------------------------------------
+
+renderTemplates();
 
 
 // --------------------------------------------------
@@ -2848,8 +3490,12 @@ document.addEventListener(
     }
 );
 
+renderTemplates();
+
+
 setInterval(() => {
 
     renderGames();
 
 }, 30000);
+

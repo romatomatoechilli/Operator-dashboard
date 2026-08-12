@@ -99,17 +99,6 @@ body {
     line-height: 1;
 }
 
-.brand-subtitle {
-    margin-top: 6px;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 1.8px;
-
-    color: #6f7c89;
-}
 
 
 .header-right {
@@ -1267,14 +1256,16 @@ h2 {
     }
 
     .brand-name {
-        font-size: 18px;
-    }
+    font-size: 20px;
+}
 
-    .brand-subtitle {
-        font-size: 8px;
-
-        letter-spacing: 1.4px;
-    }
+.brand-subtitle {
+    font-size: 8px;
+    letter-spacing: 0.10em;
+    font-weight: 700;
+    opacity: 0.55;
+    margin-top: 2px;
+}
 
     .header-right {
         flex-direction: column;
@@ -1325,6 +1316,22 @@ h2 {
     .workflow-options {
         grid-template-columns: 1fr;
     }
+
+    .workflow-option {
+    cursor: grab;
+}
+
+.workflow-option:active {
+    cursor: grabbing;
+}
+
+.workflow-option.dragging {
+    opacity: 0.45;
+}
+
+.workflow-option.drag-over {
+    border-top: 2px solid rgba(255,255,255,0.8);
+}
 
     .modal-content {
         padding: 22px;
@@ -2336,7 +2343,8 @@ h2 {
 
 
 .workflow-option.drag-over {
-    border-top: 1px solid rgba(255,255,255,0.35);
+    border-top: 2px solid #ffffff;
+    background: rgba(255,255,255,0.08);
 }
 
 /* --------------------------------------------------
@@ -2406,4 +2414,831 @@ h2 {
 
 #saveWorkflowTemplate:hover {
     background: rgba(255,255,255,0.05);
+}
+
+/* --------------------------------------------------
+   SAVED TEMPLATE CARDS
+-------------------------------------------------- */
+
+.template-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 16px 18px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.template-card:hover {
+    border-color: #cfd4dc;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+/* LEFT SIDE */
+
+.template-card-info {
+    min-width: 0;
+}
+
+
+.template-card-name {
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #ffffff;
+
+    margin-bottom: 4px;
+}
+
+
+.template-card-sport {
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    color: #6b7280;
+}
+
+
+/* RIGHT SIDE */
+
+.template-card-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+
+/* USE */
+
+.template-use-button {
+    border: none;
+
+    padding: 8px 14px;
+
+    border-radius: 6px;
+
+    background: #111827;
+
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.05em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+
+.template-use-button:hover {
+    background: #000000;
+}
+
+
+.template-use-button:active {
+    transform: translateY(1px);
+}
+
+
+/* DELETE */
+
+.template-delete-button {
+    border: 1px solid #e5e7eb;
+
+    padding: 8px 11px;
+
+    border-radius: 6px;
+
+    background: white;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.template-delete-button:hover {
+    color: #dc2626;
+
+    border-color: #fecaca;
+
+    background: #fef2f2;
+}
+
+/* ==================================================
+   TEMPLATES PANEL
+================================================== */
+
+.templates-panel {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 150;
+
+    padding: 32px;
+
+    background: rgba(2, 6, 10, 0.88);
+
+    backdrop-filter: blur(10px);
+
+    overflow-y: auto;
+}
+
+
+.templates-panel.templates-visible {
+    display: block;
+}
+
+
+/* --------------------------------------------------
+   PANEL HEADER
+-------------------------------------------------- */
+
+.templates-panel-header {
+
+    max-width: 900px;
+
+    margin: 0 auto 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px 24px;
+
+    background: #111922;
+
+    border: 1px solid #34414e;
+
+    border-radius: 8px 8px 0 0;
+
+}
+
+
+.templates-panel-header h2 {
+
+    margin: 4px 0 0;
+
+}
+
+
+/* --------------------------------------------------
+   TEMPLATE LIST
+-------------------------------------------------- */
+
+.templates-panel > .template-list {
+
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    padding: 16px;
+
+    background: #0d141c;
+
+    border: 1px solid #34414e;
+
+    border-top: none;
+
+    border-radius: 0 0 8px 8px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+/* --------------------------------------------------
+   TEMPLATE CARD
+-------------------------------------------------- */
+
+.templates-panel .template-card {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 16px;
+
+    background: #151e27;
+
+    border: 1px solid #293541;
+
+    border-radius: 6px;
+
+    color: #fff;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.templates-panel .template-card:hover {
+
+    border-color: #465564;
+
+    background: #18222c;
+
+}
+
+
+/* --------------------------------------------------
+   CARD HEADER
+-------------------------------------------------- */
+
+.template-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-width: 220px;
+
+}
+
+
+.template-name {
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #fff;
+
+    margin-bottom: 3px;
+
+}
+
+
+.template-card-sport,
+.template-sport {
+
+    color: #7f8b97;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+}
+
+
+/* --------------------------------------------------
+   COMMERCIAL BADGE
+-------------------------------------------------- */
+
+.template-commercial-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 7px;
+
+    border: 1px solid #394754;
+
+    border-radius: 4px;
+
+    color: #9eabb7;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    white-space: nowrap;
+
+}
+
+
+/* --------------------------------------------------
+   WORKFLOW
+-------------------------------------------------- */
+
+.templates-panel .template-workflow {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    flex: 1;
+
+    margin: 0;
+
+}
+
+
+.templates-panel .template-step {
+
+    padding: 4px 7px;
+
+    background: #202b35;
+
+    border: 1px solid #303c47;
+
+    border-radius: 4px;
+
+    color: #aeb8c1;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+/* --------------------------------------------------
+   ACTIONS
+-------------------------------------------------- */
+
+.templates-panel .template-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin: 0;
+
+    flex-shrink: 0;
+
+}
+
+
+.templates-panel .use-template-button {
+
+    padding: 7px 11px;
+
+    border: none;
+
+    border-radius: 4px;
+
+    background: #fff;
+
+    color: #111;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    cursor: pointer;
+
+}
+
+
+.templates-panel .use-template-button:hover {
+
+    background: #ddd;
+
+}
+
+
+.templates-panel .delete-template-button {
+
+    padding: 7px 9px;
+
+    border: 1px solid #39434d;
+
+    border-radius: 4px;
+
+    background: transparent;
+
+    color: #7f8b97;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.templates-panel .delete-template-button:hover {
+
+    color: #fff;
+
+    border-color: #667481;
+
+}
+
+
+/* --------------------------------------------------
+   EMPTY STATE
+-------------------------------------------------- */
+
+.templates-panel .empty-templates {
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #697683;
+
+    font-size: 12px;
+
+}
+
+/* ==================================================
+   COMPACT OPERATIONS HEADER
+================================================== */
+
+.operations-summary {
+    margin-bottom: 24px;
+
+    padding: 10px 12px;
+
+    background: #111;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+}
+
+
+.operations-label {
+    margin-bottom: 14px;
+
+    color: #777;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+}
+
+
+.operations-stats {
+    display: flex;
+    align-items: stretch;
+}
+
+
+.operations-stat {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0 22px;
+
+    border-right: 1px solid #292929;
+}
+
+
+.operations-stat:first-child {
+    padding-left: 0;
+}
+
+
+.operations-stat:last-child {
+    padding-right: 0;
+    border-right: none;
+}
+
+
+.operations-number {
+    font-size: 20px;
+    line-height: 1;
+
+    font-weight: 700;
+
+    color: #fff;
+
+    letter-spacing: -0.04em;
+}
+
+
+.operations-stat-label {
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+}
+
+
+/* ==================================================
+   COMPACT ATTENTION
+================================================== */
+
+.attention-section {
+    margin-bottom: 30px;
+
+    padding: 20px 22px;
+
+    background: #111;
+
+    border: 1px solid #292929;
+    border-radius: 10px;
+}
+
+
+.attention-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+}
+
+
+.attention-header h2 {
+    margin: 3px 0 0;
+
+    font-size: 18px;
+
+    letter-spacing: -0.02em;
+}
+
+
+.attention-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #777;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+}
+
+
+.attention-count {
+    color: #fff;
+
+    font-size: 16px;
+
+    line-height: 1;
+}
+
+
+/* ==================================================
+   ATTENTION ITEMS
+================================================== */
+
+.attention-item {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 52px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid #292929;
+}
+
+
+.attention-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* --------------------------------------------------
+   ATTENTION DOT
+-------------------------------------------------- */
+
+.attention-dot {
+    width: 7px;
+    height: 7px;
+    min-width: 7px;
+
+    border-radius: 50%;
+
+    background: #ef4444;
+
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+}
+
+
+.attention-game {
+    color: #fff;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.attention-action {
+    margin-top: 3px;
+
+    color: #777;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+}
+
+
+.attention-right {
+    color: #aaa;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+}
+
+
+/* ==================================================
+   EMPTY ATTENTION
+================================================== */
+
+.empty-attention {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 0 4px;
+
+    border-top: 1px solid #292929;
+
+    color: #777;
+
+    font-size: 10px;
+}
+
+
+.empty-attention-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    border: 1px solid #333;
+    border-radius: 50%;
+
+    color: #888;
+
+    font-size: 10px;
+}
+
+
+.empty-attention strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    letter-spacing: 0.08em;
+}
+
+
+.empty-attention span:last-child {
+    display: block;
+
+    color: #666;
+
+    font-size: 9px;
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 600px) {
+
+    .operations-summary {
+        padding: 15px;
+    }
+
+
+    .operations-stat {
+        padding: 0 12px;
+    }
+
+
+    .operations-number {
+        font-size: 24px;
+    }
+
+
+    .attention-section {
+        padding: 16px;
+    }
+
+
+    .attention-header h2 {
+        font-size: 15px;
+    }
+
+}
+
+/* --------------------------------------------------
+   ATTENTION — CONDENSED SUMMIT STYLE
+-------------------------------------------------- */
+
+.attention-section {
+    padding: 18px 20px;
+}
+
+.attention-header {
+    margin-bottom: 14px;
+}
+
+.attention-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.attention-item {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 14px;
+
+    border: 1px solid #303942;
+    border-radius: 6px;
+
+    background: #151c23;
+}
+
+.attention-item:hover {
+    border-color: #46515c;
 }

@@ -43,13 +43,24 @@
     </div>
 
     <button
+    id="templatesBtn"
+    class="template-header-button"
+    type="button"
+>
+    TEMPLATES
+</button>
+
+    <button
         id="operatorModeBtn"
         class="operator-button"
     >
         OPERATOR MODE
     </button>
 
-    <button id="addGameBtn" class="add-button">
+    <button
+        id="addGameBtn"
+        class="add-button"
+    >
         + ADD GAME
     </button>
 
@@ -62,85 +73,133 @@
 <main>
 
 
-    <!-- OVERVIEW -->
+   <!-- OPERATIONS SUMMARY -->
 
-    <section class="overview">
+<section class="operations-summary">
 
-        <div class="overview-item">
+    <div class="operations-label">
+        OPERATIONS
+    </div>
 
-            <span id="gameCount">
+    <div class="operations-stats">
+
+        <div class="operations-stat">
+
+            <span
+                id="gameCount"
+                class="operations-number"
+            >
                 0
             </span>
 
-            <small>
+            <span class="operations-stat-label">
                 EVENTS
-            </small>
+            </span>
 
         </div>
 
 
-        <div class="overview-item">
+        <div class="operations-stat">
 
-            <span id="liveCount">
+            <span
+                id="liveCount"
+                class="operations-number"
+            >
                 0
             </span>
 
-            <small>
+            <span class="operations-stat-label">
                 LIVE
-            </small>
+            </span>
 
         </div>
 
 
-        <div class="overview-item">
+        <div class="operations-stat">
 
-            <span id="attentionCount">
+            <span
+                id="attentionCount"
+                class="operations-number"
+            >
                 0
             </span>
 
-            <small>
+            <span class="operations-stat-label">
                 ATTENTION
-            </small>
+            </span>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
+ <!-- ATTENTION -->
 
-    <!-- ATTENTION -->
+<section
+    id="attentionSection"
+    class="attention-section"
+>
 
-    <section
-        id="attentionSection"
-        class="attention-section"
-    >
+    <div class="attention-header">
 
-        <div class="section-heading">
+        <div>
+
+            <span class="section-label">
+                PRIORITY
+            </span>
+
+            <h2>
+                ATTENTION REQUIRED
+            </h2>
+
+        </div>
+
+
+        <div class="attention-status">
+
+            <span
+                id="attentionCount"
+                class="attention-count"
+            >
+                0
+            </span>
+
+            <span>
+                ACTIVE
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div id="attentionList">
+
+        <div class="empty-attention">
+
+            <span class="empty-attention-icon">
+                ✓
+            </span>
 
             <div>
 
-                <span class="section-label">
-                    PRIORITY
+                <strong>
+                    ALL CLEAR
+                </strong>
+
+                <span>
+                    Nothing requires your attention right now.
                 </span>
 
-                <h2>
-                    ATTENTION REQUIRED
-                </h2>
-
             </div>
 
         </div>
 
+    </div>
 
-        <div id="attentionList">
-
-            <div class="empty-attention">
-                Nothing requires your attention right now.
-            </div>
-
-        </div>
-
-    </section>
+</section>
 
 
 
@@ -173,6 +232,51 @@
         </div>
 
     </section>
+
+    <!-- TEMPLATES -->
+
+    <section
+    id="templatesPanel"
+    class="templates-panel"
+>
+
+    <div class="templates-panel-header">
+
+        <div>
+
+            <span class="section-label">
+                CONFIGURATION
+            </span>
+
+            <h2>
+                TEMPLATES
+            </h2>
+
+        </div>
+
+        <button
+            id="closeTemplates"
+            class="close-button"
+            type="button"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div
+        id="templateList"
+        class="template-list"
+    >
+
+        <div class="empty-templates">
+            No templates created yet.
+        </div>
+
+    </div>
+
+</section>
 
     <!-- OPERATOR MODE -->
 
@@ -280,17 +384,7 @@
 
 </select>
 
-<div class="template-actions">
 
-    <button
-        type="button"
-        id="manageTemplatesBtn"
-        class="secondary-button"
-    >
-        MANAGE TEMPLATES
-    </button>
-
-</div>
 
 
         <label>
@@ -622,145 +716,33 @@
 
 </div>
 
-<!-- WORKFLOW TEMPLATES -->
-
-<div class="workflow-templates">
-
-    <div class="workflow-template-header">
-
-        <div>
-            <div class="workflow-title">
-                WORKFLOW TEMPLATE
-            </div>
-
-            <div class="workflow-subtitle">
-                SAVE OR LOAD A WORKFLOW CONFIGURATION
-            </div>
-        </div>
-
-    </div>
 
 
-    <div class="workflow-template-controls">
+        <div class="template-actions">
 
-        <select id="workflowTemplate">
+    <button
+        id="saveTemplate"
+        class="save-template-button"
+        type="button"
+    >
+        SAVE AS TEMPLATE
+    </button>
 
-            <option value="">
-                CUSTOM WORKFLOW
-            </option>
-
-        </select>
-
-
-        <button
-            type="button"
-            id="saveWorkflowTemplate"
-        >
-            SAVE TEMPLATE
-        </button>
-
-
-        <button
-            type="button"
-            id="deleteWorkflowTemplate"
-        >
-            DELETE
-        </button>
-
-    </div>
+    <button
+        id="createGame"
+        class="create-button"
+        type="button"
+    >
+        CREATE GAME
+    </button>
 
 </div>
-
-        <button
-            id="createGame"
-            class="create-button"
-        >
-            CREATE GAME
-        </button>
 
    </div>
 
 </div>
 
 
-<!-- TEMPLATE MANAGER -->
-
-<div
-    id="templateModal"
-    class="modal"
->
-
-    <div class="modal-content template-modal-content">
-
-        <div class="modal-header">
-
-            <div>
-
-                <span class="section-label">
-                    CONFIGURATION
-                </span>
-
-                <h2>
-                    TEMPLATE MANAGER
-                </h2>
-
-            </div>
-
-            <button
-                id="closeTemplateModal"
-                class="close-button"
-                type="button"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="template-manager">
-
-            <div class="template-manager-header">
-
-                <div>
-
-                    <div class="workflow-title">
-                        SAVED TEMPLATES
-                    </div>
-
-                    <div class="workflow-subtitle">
-                        CREATE AND MANAGE EVENT WORKFLOWS
-                    </div>
-
-                </div>
-
-
-                <button
-                    id="createTemplateBtn"
-                    class="add-break-button"
-                    type="button"
-                >
-                    + CREATE TEMPLATE
-                </button>
-
-            </div>
-
-
-            <div
-                id="templateList"
-                class="template-list"
-            >
-
-                <div class="empty-templates">
-                    No templates created yet.
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
 
 <!-- CREATE TEMPLATE MODAL -->
 
