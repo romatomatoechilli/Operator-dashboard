@@ -268,6 +268,30 @@
 
         </div>
 
+        <label>
+    Template
+</label>
+
+<select id="workflowTemplate">
+
+    <option value="">
+    No Template
+</option>
+
+</select>
+
+<div class="template-actions">
+
+    <button
+        type="button"
+        id="manageTemplatesBtn"
+        class="secondary-button"
+    >
+        MANAGE TEMPLATES
+    </button>
+
+</div>
+
 
         <label>
             Game Name
@@ -654,15 +678,245 @@
             CREATE GAME
         </button>
 
+   </div>
+
+</div>
+
+
+<!-- TEMPLATE MANAGER -->
+
+<div
+    id="templateModal"
+    class="modal"
+>
+
+    <div class="modal-content template-modal-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="section-label">
+                    CONFIGURATION
+                </span>
+
+                <h2>
+                    TEMPLATE MANAGER
+                </h2>
+
+            </div>
+
+            <button
+                id="closeTemplateModal"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="template-manager">
+
+            <div class="template-manager-header">
+
+                <div>
+
+                    <div class="workflow-title">
+                        SAVED TEMPLATES
+                    </div>
+
+                    <div class="workflow-subtitle">
+                        CREATE AND MANAGE EVENT WORKFLOWS
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="createTemplateBtn"
+                    class="add-break-button"
+                    type="button"
+                >
+                    + CREATE TEMPLATE
+                </button>
+
+            </div>
+
+
+            <div
+                id="templateList"
+                class="template-list"
+            >
+
+                <div class="empty-templates">
+                    No templates created yet.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- CREATE TEMPLATE MODAL -->
+
+<div
+    id="createTemplateModal"
+    class="modal"
+>
+
+    <div class="modal-content template-editor-content">
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="section-label">
+                    NEW TEMPLATE
+                </span>
+
+                <h2>
+                    CREATE TEMPLATE
+                </h2>
+
+            </div>
+
+            <button
+                id="closeCreateTemplateModal"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <label>
+            Template Name
+        </label>
+
+        <input
+            id="templateName"
+            type="text"
+            placeholder="Example: Soccer Standard"
+        >
+
+
+        <label>
+            Sport
+        </label>
+
+        <select id="templateSport">
+
+            <option value="Soccer">
+                Soccer
+            </option>
+
+            <option value="UFC">
+                UFC
+            </option>
+
+            <option value="Rugby">
+                Rugby
+            </option>
+
+            <option value="__custom__">
+                + ADD NEW SPORT
+            </option>
+
+        </select>
+
+
+        <input
+            id="templateCustomSport"
+            type="text"
+            placeholder="Enter new sport name..."
+            style="display: none;"
+        >
+
+
+        <div class="workflow-header">
+
+            <div>
+
+                <div class="workflow-title">
+                    WORKFLOW
+                </div>
+
+                <div class="workflow-subtitle">
+                    SELECT THE STEPS USED BY THIS TEMPLATE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="templateWorkflowOptions"
+            class="workflow-options"
+        >
+
+            <!-- Workflow steps will be copied here -->
+
+        </div>
+
+
+        <div class="template-commercial-section">
+
+            <label class="commercial-toggle">
+
+                <input
+                    type="checkbox"
+                    id="templateIncludeCommercials"
+                >
+
+                <span>
+                    INCLUDE COMMERCIAL BREAKS
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <div class="template-editor-actions">
+
+            <button
+                id="cancelCreateTemplate"
+                class="secondary-button"
+                type="button"
+            >
+                CANCEL
+            </button>
+
+
+            <button
+                id="saveTemplateBtn"
+                class="create-button"
+                type="button"
+            >
+                SAVE TEMPLATE
+            </button>
+
+        </div>
+
     </div>
 
 </div>
 
 
-
 <script src="js/storage.js"></script>
 
 <script src="app.js"></script>
+
+
+
 
 
 </body>

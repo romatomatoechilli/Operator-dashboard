@@ -116,6 +116,41 @@ let savedSports =
 
 loadSports();
 
+// --------------------------------------------------
+// WORKFLOW TEMPLATES
+// --------------------------------------------------
+
+const workflowTemplates = {
+
+    "Soccer Standard": [
+        "Preslate",
+        "Drop Slate",
+        "Game End Marker",
+        "Post Slate",
+        "Broadcast End",
+        "Expiration"
+    ],
+
+    "UFC Standard": [
+        "Preslate",
+        "Drop Slate",
+        "Game End Marker",
+        "Post Slate",
+        "Broadcast End",
+        "Expiration"
+    ],
+
+    "Rugby Standard": [
+        "Preslate",
+        "Drop Slate",
+        "Game End Marker",
+        "Post Slate",
+        "Broadcast End",
+        "Expiration"
+    ]
+
+};
+
 
 // --------------------------------------------------
 // STARTER GAMES
@@ -1647,6 +1682,56 @@ function renumberCommercialBreaks() {
 }
 
 // --------------------------------------------------
+// WORKFLOW TEMPLATE SELECTOR
+// --------------------------------------------------
+
+const workflowTemplate =
+    document.getElementById("workflowTemplate");
+
+
+workflowTemplate.addEventListener(
+    "change",
+    () => {
+
+        const templateName =
+            workflowTemplate.value;
+
+
+        if (!templateName) {
+            return;
+        }
+
+
+        const templateSteps =
+            workflowTemplates[templateName];
+
+
+        if (!templateSteps) {
+            return;
+        }
+
+
+        const checkboxes =
+            workflowOptions.querySelectorAll(
+                "input[type='checkbox']"
+            );
+
+
+        checkboxes.forEach(
+            checkbox => {
+
+                checkbox.checked =
+                    templateSteps.includes(
+                        checkbox.value
+                    );
+
+            }
+        );
+
+    }
+);
+
+// --------------------------------------------------
 // SAVED CUSTOM WORKFLOW STEPS
 // --------------------------------------------------
 
@@ -2175,6 +2260,166 @@ renderGames();
 // --------------------------------------------------
 // UPDATE DROP SLATE CLOCK
 // --------------------------------------------------
+
+
+// --------------------------------------------------
+// TEMPLATE MANAGER
+// --------------------------------------------------
+
+const manageTemplatesBtn =
+    document.getElementById("manageTemplatesBtn");
+
+const templateModal =
+    document.getElementById("templateModal");
+
+const closeTemplateModal =
+    document.getElementById("closeTemplateModal");
+
+
+manageTemplatesBtn.onclick = () => {
+
+    templateModal.style.display = "flex";
+
+};
+
+
+closeTemplateModal.onclick = () => {
+
+    templateModal.style.display = "none";
+
+};
+
+
+window.addEventListener(
+    "click",
+    (event) => {
+
+        if (event.target === templateModal) {
+
+            templateModal.style.display = "none";
+
+        }
+
+    }
+);
+
+// --------------------------------------------------
+// CREATE TEMPLATE
+// --------------------------------------------------
+
+const createTemplateBtn =
+    document.getElementById("createTemplateBtn");
+
+const createTemplateModal =
+    document.getElementById("createTemplateModal");
+
+const closeCreateTemplateModal =
+    document.getElementById("closeCreateTemplateModal");
+
+const cancelCreateTemplate =
+    document.getElementById("cancelCreateTemplate");
+
+
+createTemplateBtn.onclick = () => {
+
+    loadTemplateWorkflowOptions();
+
+    createTemplateModal.style.display =
+        "flex";
+
+};
+
+
+closeCreateTemplateModal.onclick = () => {
+
+    createTemplateModal.style.display =
+        "none";
+
+};
+
+
+cancelCreateTemplate.onclick = () => {
+
+    createTemplateModal.style.display =
+        "none";
+
+};
+
+
+// --------------------------------------------------
+// TEMPLATE WORKFLOW BUILDER
+// --------------------------------------------------
+
+const templateWorkflowOptions =
+    document.getElementById("templateWorkflowOptions");
+
+
+function loadTemplateWorkflowOptions() {
+
+    templateWorkflowOptions.innerHTML = "";
+
+    const existingWorkflowSteps =
+        workflowOptions.querySelectorAll(
+            ".workflow-option"
+        );
+
+
+    existingWorkflowSteps.forEach(
+        originalStep => {
+
+            const originalCheckbox =
+                originalStep.querySelector(
+                    "input[type='checkbox']"
+                );
+
+            if (!originalCheckbox) {
+                return;
+            }
+
+
+            const stepName =
+                originalCheckbox.value;
+
+
+            const label =
+                document.createElement("label");
+
+
+            label.className =
+                "workflow-option";
+
+
+            label.draggable = true;
+
+
+            label.innerHTML = `
+
+                <span class="workflow-drag-handle">
+                    ⋮⋮
+                </span>
+
+                <input
+                    type="checkbox"
+                    value="${stepName}"
+                    ${originalCheckbox.checked ? "checked" : ""}
+                >
+
+                <span>
+                    ${stepName}
+                </span>
+
+            `;
+
+
+            templateWorkflowOptions.appendChild(
+                label
+            );
+
+        }
+    );
+
+}
+
 
 // --------------------------------------------------
 // OPERATOR MODE
